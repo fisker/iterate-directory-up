@@ -34,9 +34,11 @@ function runTest({from, to, expected}) {
 
 runTest({from: '/a/b', expected: ['/a/b', '/a', '/']})
 runTest({from: '/a/b', to: '/a', expected: ['/a/b', '/a']})
+runTest({from: '/a', to: '/a', expected: ['/a']})
+runTest({from: '/', to: '/', expected: ['/']})
 
 // stop directory is not a parent directory
-runTest({from: '/a', to: '/b', expected: ['/a', '/']})
+runTest({from: '/a', to: '/b', expected: []})
 
 // Trialing slash doesn't matter
 runTest({from: '/a/b/', to: '/a', expected: ['/a/b', '/a']})
@@ -47,8 +49,11 @@ runTest({from: '/a/b/c/../', to: '/a/', expected: ['/a/b', '/a']})
 runTest({from: '/a', to: '/a/b', expected: []})
 
 // Relative path
-test('Relative path', t => {
+test('Relative path', (t) => {
   const from = './a'
   const to = process.cwd()
-  t.deepEqual(getDirectories(from, to), ['./a','.'].map(directory => path.resolve(directory)))
+  t.deepEqual(
+    getDirectories(from, to),
+    ['./a', '.'].map((directory) => path.resolve(directory)),
+  )
 })

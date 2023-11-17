@@ -1,7 +1,7 @@
 import path from 'node:path'
 import {toPath} from 'url-or-path'
 
-const toAbsolutePath = value => value ? path.resolve(toPath(value)) : value
+const toAbsolutePath = (value) => path.resolve(toPath(value))
 
 /**
  * Yields paths between `from` and `to`.
@@ -13,20 +13,22 @@ const toAbsolutePath = value => value ? path.resolve(toPath(value)) : value
 function* iterateDirectoryUp(from, to) {
   from = toAbsolutePath(from)
   const {root} = path.parse(from)
-  to = toAbsolutePath(to) ?? root
+  to = to ? toAbsolutePath(to) : root
 
-  // `to` is a child directory
-  if (to !== from && to.startsWith(from)) {
+  // `from` is not a child directory of `to`
+  if (from !== to && !from.startsWith(to)) {
     return
   }
 
-  for (let directory = from; ; directory = path.dirname(directory)) {
+  for (
+    let directory = from;
+    directory !== to;
+    directory = path.dirname(directory)
+  ) {
     yield directory
-
-    if (directory === to || directory === root) {
-      break
-    }
   }
+
+  yield to
 }
 
 export default iterateDirectoryUp
