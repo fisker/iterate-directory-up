@@ -30,6 +30,9 @@ import iterateDirectoryUp from 'iterate-directory-up'
 for (const directory of iterateDirectoryUp('/a/b')) {
   console.log(directory)
 }
+// "/a/b"
+// "/a"
+// "/"
 ```
 
 ## API

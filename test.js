@@ -1,5 +1,6 @@
 import url from 'node:url'
 import path from 'node:path'
+import process from 'node:process'
 import test from 'ava'
 import iterateDirectoryUp from './index.js'
 
@@ -37,5 +38,17 @@ runTest({from: '/a/b', to: '/a', expected: ['/a/b', '/a']})
 // stop directory is not a parent directory
 runTest({from: '/a', to: '/b', expected: ['/a', '/']})
 
+// Trialing slash doesn't matter
+runTest({from: '/a/b/', to: '/a', expected: ['/a/b', '/a']})
+runTest({from: '/a/b', to: '/a/', expected: ['/a/b', '/a']})
+runTest({from: '/a/b/c/../', to: '/a/', expected: ['/a/b', '/a']})
+
 // stop directory is a child directory of start directory
 runTest({from: '/a', to: '/a/b', expected: []})
+
+// Relative path
+test('Relative path', t => {
+  const from = './a'
+  const to = process.cwd()
+  t.deepEqual(getDirectories(from, to), ['./a','.'].map(directory => path.resolve(directory)))
+})
