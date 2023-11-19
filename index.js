@@ -1,13 +1,16 @@
-import path from 'node:path'
+import * as path from 'node:path'
 import {toPath} from 'url-or-path'
 
+/** @typedef {import('url-or-path').UrlOrPath}  UrlOrPath */
+
+/** @type {(urlOrPath: UrlOrPath) => string} */
 const toAbsolutePath = (value) => path.resolve(toPath(value))
 
 /**
  * Yields paths between `from` and `to`.
  *
- * @param {URL | string} from
- * @param {URL | string} [to]
+ * @param {UrlOrPath} from
+ * @param {UrlOrPath} [to]
  * @returns {Iterator<string>}
  */
 function* iterateDirectoryUp(from, to) {
@@ -15,7 +18,7 @@ function* iterateDirectoryUp(from, to) {
   const {root} = path.parse(from)
   to = to ? toAbsolutePath(to) : root
 
-  // `from` is not a child directory of `to`
+  // `from` is not a child directory of `stopDirectory`
   if (from !== to && !from.startsWith(to)) {
     return
   }
