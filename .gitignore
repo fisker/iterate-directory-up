@@ -102,3 +102,4 @@ typings/
 dist/
 index.d.ts
 index.d.ts.map
+.gitpod.yml
