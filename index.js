@@ -18,7 +18,7 @@ function* iterateDirectoryUp(from, to) {
   const {root} = path.parse(from)
   to = to ? toAbsolutePath(to) : root
 
-  // `from` is not a child directory of `stopDirectory`
+  // `from` is not a child directory of `to`
   if (from !== to && !from.startsWith(to)) {
     return
   }
