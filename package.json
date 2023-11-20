@@ -41,8 +41,10 @@
     "lint:package-json": "yarn run format:package-json --check",
     "lint:prettier": "prettier . --check",
     "prepare": "husky install",
-    "test": "ava",
-    "test-coverage": "c8 ava",
+    "test": "run-p \"test:*\"",
+    "test:js": "ava",
+    "test:types": "yarn build && tsd",
+    "test-coverage": "c8 yarn test",
     "release": "run-s format build test dist"
   },
   "ava": {
@@ -74,6 +76,7 @@
     "npm-run-all2": "6.1.1",
     "prettier": "3.1.0",
     "sort-package-json": "2.6.0",
+    "tsd": "0.29.0",
     "typescript": "5.2.2"
   },
   "packageManager": "yarn@4.0.2",

@@ -11,7 +11,7 @@ const toAbsolutePath = (value) => path.resolve(toPath(value))
  *
  * @param {UrlOrPath} from
  * @param {UrlOrPath} [to]
- * @returns {Iterator<string>}
+ * @returns {IterableIterator<string>}
  */
 function* iterateDirectoryUp(from, to) {
   from = toAbsolutePath(from)
