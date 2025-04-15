@@ -79,7 +79,7 @@
     "tsd": "0.31.0",
     "typescript": "5.4.4"
   },
-  "packageManager": "yarn@4.0.2",
+  "packageManager": "yarn@4.9.1",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
