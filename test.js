@@ -7,7 +7,7 @@ import iterateDirectoryUp from './index.js'
 const isWin32 = path.sep === '\\'
 
 const getDirectoryName = (path) =>
-  isWin32 ? `D:${path.replaceAll('/', '\\')}` : path
+  isWin32 ? `Z:${path.replaceAll('/', '\\')}` : path
 
 const getDirectories = (from, to) => [...iterateDirectoryUp(from, to)]
 
