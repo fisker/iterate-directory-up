@@ -57,7 +57,7 @@
     ]
   },
   "dependencies": {
-    "url-or-path": "^2.6.0"
+    "url-or-path": "^2.6.1"
   },
   "devDependencies": {
     "@fisker/eslint-config": "14.0.0",
