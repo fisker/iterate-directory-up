@@ -4,6 +4,9 @@ import iterateDirectoryUp from './index.js'
 
 expectType<Generator<string>>(iterateDirectoryUp('/path/to/directory/'))
 expectType<Generator<string>>(
+  iterateDirectoryUp('/path/to/directory/', undefined),
+)
+expectType<Generator<string>>(
   iterateDirectoryUp(url.pathToFileURL('/path/to/directory/')),
 )
 expectType<Generator<string>>(

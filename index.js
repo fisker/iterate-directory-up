@@ -1,13 +1,13 @@
 import * as path from 'node:path'
 import {toAbsolutePath} from 'url-or-path'
 
-/** @import {UrlOrPath} from 'url-or-path' */
+/** @import {UrlOrPath, OptionalUrlOrPath} from 'url-or-path' */
 
 /**
  * Yields paths between `from` and `to`.
  *
  * @param {UrlOrPath} from
- * @param {UrlOrPath} [to]
+ * @param {OptionalUrlOrPath} [to]
  * @returns {Generator<string>}
  */
 function* iterateDirectoryUp(from, to) {
