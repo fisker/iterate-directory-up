@@ -32,6 +32,13 @@ function runTest({from, to, expected}) {
   })
 }
 
+test('No arguments', (t) => {
+  const directories = getDirectories()
+  t.true(Array.isArray(directories))
+  t.is(directories[0], process.cwd())
+  t.is(directories.at(-1), path.resolve('/'))
+})
+
 runTest({from: '/a/b', expected: ['/a/b', '/a', '/']})
 runTest({from: '/a/b', to: '/a', expected: ['/a/b', '/a']})
 runTest({from: '/a', to: '/a', expected: ['/a']})

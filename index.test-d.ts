@@ -2,6 +2,11 @@ import * as url from 'node:url'
 import {expectType} from 'tsd'
 import iterateDirectoryUp from './index.js'
 
+expectType<Generator<string>>(iterateDirectoryUp())
+expectType<Generator<string>>(iterateDirectoryUp(undefined))
+expectType<Generator<string>>(
+  iterateDirectoryUp(undefined, '/path/to/directory/'),
+)
 expectType<Generator<string>>(iterateDirectoryUp('/path/to/directory/'))
 expectType<Generator<string>>(
   iterateDirectoryUp('/path/to/directory/', undefined),

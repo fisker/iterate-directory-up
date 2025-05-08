@@ -34,4 +34,13 @@ for (const directory of iterateDirectoryUp('/a/b')) {
 
 ## API
 
-### `iterateDirectoryUp(from: URL | string, to?: URL | string)`
+### `iterateDirectoryUp(from?: URL | string, to?: URL | string)`
+
+#### `from`
+
+Type: `URL | string`\
+Default: `process.cwd()`
+
+#### `to`
+
+Type: `URL | string`\
