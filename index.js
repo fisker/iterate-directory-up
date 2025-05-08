@@ -24,23 +24,20 @@ for (const directory of iterateDirectoryUp('/a/b')) {
 ```
 */
 function* iterateDirectoryUp(from, to) {
-  from = toAbsolutePath(from) ?? process.cwd()
-  to = toAbsolutePath(to) ?? path.parse(from).root
+  let directory = toAbsolutePath(from) ?? process.cwd()
+  const stopDirectory = toAbsolutePath(to) ?? path.parse(directory).root
 
-  // `from` is not a child directory of `to`
-  if (!from.startsWith(to)) {
+  // `directory` is not a child directory of `stopDirectory`
+  if (!directory.startsWith(stopDirectory)) {
     return
   }
 
-  for (
-    let directory = from;
-    directory !== to;
-    directory = path.dirname(directory)
-  ) {
+  while (directory !== stopDirectory) {
     yield directory
+    directory = path.dirname(directory)
   }
 
-  yield to
+  yield stopDirectory
 }
 
 export default iterateDirectoryUp

@@ -38,9 +38,14 @@ for (const directory of iterateDirectoryUp('/a/b')) {
 
 #### `from`
 
+The directory iteration starts.
+
 Type: `URL | string`\
 Default: `process.cwd()`
 
 #### `to`
 
+The directory iteration stops.
+
 Type: `URL | string`\
+Default: Root directory
