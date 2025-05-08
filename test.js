@@ -1,7 +1,8 @@
+import assert from 'node:assert/strict'
 import path from 'node:path'
 import process from 'node:process'
+import test from 'node:test'
 import url from 'node:url'
-import test from 'ava'
 import iterateDirectoryUp from './index.js'
 
 const isWin32 = path.sep === '\\'
@@ -16,13 +17,13 @@ function runTest({from, to, expected}) {
   to = to ? getDirectoryName(to) : to
   expected = expected.map((directory) => getDirectoryName(directory))
 
-  test(`From: '${from}'${to ? `', To: ${to}'` : ''}`, (t) => {
-    t.deepEqual(getDirectories(from, to), expected)
-    t.deepEqual(
+  test(`From: '${from}'${to ? `', To: ${to}'` : ''}`, () => {
+    assert.deepEqual(getDirectories(from, to), expected)
+    assert.deepEqual(
       getDirectories(url.pathToFileURL(from), to ? url.pathToFileURL(to) : to),
       expected,
     )
-    t.deepEqual(
+    assert.deepEqual(
       getDirectories(
         url.pathToFileURL(from).href,
         to ? url.pathToFileURL(to).href : to,
@@ -32,11 +33,11 @@ function runTest({from, to, expected}) {
   })
 }
 
-test('No arguments', (t) => {
+test('No arguments', () => {
   const directories = getDirectories()
-  t.true(Array.isArray(directories))
-  t.is(directories[0], process.cwd())
-  t.is(directories.at(-1), path.resolve('/'))
+  assert.ok(Array.isArray(directories))
+  assert.equal(directories[0], process.cwd())
+  assert.equal(directories.at(-1), path.resolve('/'))
 })
 
 runTest({from: '/a/b', expected: ['/a/b', '/a', '/']})
@@ -56,10 +57,10 @@ runTest({from: '/a/b/c/../', to: '/a/', expected: ['/a/b', '/a']})
 runTest({from: '/a', to: '/a/b', expected: []})
 
 // Relative path
-test('Relative path', (t) => {
+test('Relative path', () => {
   const from = './a'
   const to = process.cwd()
-  t.deepEqual(
+  assert.deepEqual(
     getDirectories(from, to),
     ['./a', '.'].map((directory) => path.resolve(directory)),
   )
