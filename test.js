@@ -6,9 +6,13 @@ import url from 'node:url'
 import iterateDirectoryUp from './index.js'
 
 const isWindows = path.sep === '\\'
+let DRIVE_LETTER
+if (isWindows) {
+  DRIVE_LETTER = process.cwd()[0].toLowerCase() === 'z' ? 'A' : 'Z'
+}
 
 const getDirectoryName = (path) =>
-  isWindows ? `Z:${path.replaceAll('/', '\\')}` : path
+  isWindows ? `${DRIVE_LETTER}:${path.replaceAll('/', '\\')}` : path
 
 const getDirectories = (from, to) => [...iterateDirectoryUp(from, to)]
 
@@ -54,6 +58,7 @@ runTest(['/', '/'], ['/'])
 
 // stop directory is not a parent directory
 runTest(['/a', '/b'], [])
+runTest(['/aa', '/a'], [])
 
 // Trialing slash doesn't matter
 runTest(['/a/b/', '/a'], ['/a/b', '/a'])
@@ -72,3 +77,20 @@ test('Relative path', () => {
     ['./a', '.'].map((directory) => path.resolve(directory)),
   )
 })
+
+// Case insensitive
+if (isWindows) {
+  test('Case insensitive', () => {
+    const expected = [String.raw`Z:\a\b`, String.raw`Z:\a`]
+    // Drive letter
+    assert.deepEqual(
+      getDirectories(String.raw`Z:\a\b`, String.raw`z:\a`),
+      expected,
+    )
+    // Directory name
+    assert.deepEqual(
+      getDirectories(String.raw`Z:\a\b`, String.raw`Z:\A`),
+      expected,
+    )
+  })
+}

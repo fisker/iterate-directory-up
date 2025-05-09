@@ -23,10 +23,12 @@
     "index.d.ts.map"
   ],
   "scripts": {
+    "benchmark": "node benchmark/benchmark.js",
     "build": "run-p clean \"build:*\"",
     "build:types": "tsc --emitDeclarationOnly --noEmit false",
     "clean": "run-p \"clean:*\"",
     "clean:dist": "del-cli dist",
+    "debug": "node --watch example.js",
     "dist": "run-p \"dist:*\"",
     "dist:npm": "release-it",
     "fix": "run-p --continue-on-error \"fix:*\"",
@@ -74,6 +76,7 @@
     "prettier": "3.5.3",
     "release-it": "19.0.2",
     "sort-package-json": "3.2.0",
+    "tinybench": "4.0.1",
     "tsd": "0.32.0",
     "typescript": "5.8.3"
   },
