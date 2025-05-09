@@ -2,7 +2,7 @@ import * as path from 'node:path'
 import process from 'node:process'
 import {toAbsolutePath} from 'url-or-path'
 
-/** @import {OptionalUrlOrPath} from 'url-or-path' */
+/** @import {UrlOrPath, OptionalUrlOrPath} from 'url-or-path' */
 
 /**
 Yields paths between `from` and `to`.
@@ -25,30 +25,19 @@ for (const directory of iterateDirectoryUp('/a/b')) {
 */
 function* iterateDirectoryUp(from, to) {
   let directory = toAbsolutePath(from) ?? process.cwd()
-  let stopDirectory = toAbsolutePath(to)
+  const stopDirectory = toAbsolutePath(to) ?? path.parse(directory).root
 
-  if (stopDirectory) {
-    const relation = path.relative(stopDirectory, directory)
-
-    // `directory` is not a child directory of `stopDirectory`
-    if (relation.startsWith('..') || relation === directory) {
-      return
-    }
+  // `directory` is not a child directory of `stopDirectory`
+  if (!directory.startsWith(stopDirectory)) {
+    return
   }
 
-  stopDirectory = stopDirectory
-    ? directory.slice(0, stopDirectory.length)
-    : path.parse(directory).root
-
-  while (true) {
+  while (directory !== stopDirectory) {
     yield directory
-
-    if (directory === stopDirectory) {
-      break
-    }
-
     directory = path.dirname(directory)
   }
+
+  yield stopDirectory
 }
 
 export default iterateDirectoryUp
