@@ -5,28 +5,35 @@ import test from 'node:test'
 import url from 'node:url'
 import iterateDirectoryUp from './index.js'
 
-const isWin32 = path.sep === '\\'
+const isWindows = path.sep === '\\'
 
 const getDirectoryName = (path) =>
-  isWin32 ? `Z:${path.replaceAll('/', '\\')}` : path
+  isWindows ? `Z:${path.replaceAll('/', '\\')}` : path
 
 const getDirectories = (from, to) => [...iterateDirectoryUp(from, to)]
 
-function runTest({from, to, expected}) {
-  from = getDirectoryName(from)
-  to = to ? getDirectoryName(to) : to
+function runTest(arguments_, expected) {
+  arguments_ = arguments_.map((directory) =>
+    directory ? getDirectoryName(directory) : directory,
+  )
   expected = expected.map((directory) => getDirectoryName(directory))
 
+  const [from, to] = arguments_
   test(`From: '${from}'${to ? `', To: ${to}'` : ''}`, () => {
-    assert.deepEqual(getDirectories(from, to), expected)
+    assert.deepEqual(getDirectories(...arguments_), expected)
     assert.deepEqual(
-      getDirectories(url.pathToFileURL(from), to ? url.pathToFileURL(to) : to),
+      getDirectories(
+        ...arguments_.map((directory) =>
+          directory ? url.pathToFileURL(directory) : directory,
+        ),
+      ),
       expected,
     )
     assert.deepEqual(
       getDirectories(
-        url.pathToFileURL(from).href,
-        to ? url.pathToFileURL(to).href : to,
+        ...arguments_.map((directory) =>
+          directory ? url.pathToFileURL(directory).href : directory,
+        ),
       ),
       expected,
     )
@@ -40,21 +47,21 @@ test('No arguments', () => {
   assert.equal(directories.at(-1), path.resolve('/'))
 })
 
-runTest({from: '/a/b', expected: ['/a/b', '/a', '/']})
-runTest({from: '/a/b', to: '/a', expected: ['/a/b', '/a']})
-runTest({from: '/a', to: '/a', expected: ['/a']})
-runTest({from: '/', to: '/', expected: ['/']})
+runTest(['/a/b'], ['/a/b', '/a', '/'])
+runTest(['/a/b', '/a'], ['/a/b', '/a'])
+runTest(['/a', '/a'], ['/a'])
+runTest(['/', '/'], ['/'])
 
 // stop directory is not a parent directory
-runTest({from: '/a', to: '/b', expected: []})
+runTest(['/a', '/b'], [])
 
 // Trialing slash doesn't matter
-runTest({from: '/a/b/', to: '/a', expected: ['/a/b', '/a']})
-runTest({from: '/a/b', to: '/a/', expected: ['/a/b', '/a']})
-runTest({from: '/a/b/c/../', to: '/a/', expected: ['/a/b', '/a']})
+runTest(['/a/b/', '/a'], ['/a/b', '/a'])
+runTest(['/a/b', '/a/'], ['/a/b', '/a'])
+runTest(['/a/b/c/../', '/a/'], ['/a/b', '/a'])
 
 // stop directory is a child directory of start directory
-runTest({from: '/a', to: '/a/b', expected: []})
+runTest(['/a', '/a/b'], [])
 
 // Relative path
 test('Relative path', () => {
