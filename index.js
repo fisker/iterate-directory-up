@@ -40,15 +40,12 @@ function* iterateDirectoryUp(from, to) {
     ? directory.slice(0, stopDirectory.length)
     : path.parse(directory).root
 
-  while (true) {
+  while (directory !== stopDirectory) {
     yield directory
-
-    if (directory === stopDirectory) {
-      break
-    }
-
     directory = path.dirname(directory)
   }
+
+  yield stopDirectory
 }
 
 export default iterateDirectoryUp
