@@ -40,10 +40,21 @@ await runBenchmark(
 await runBenchmark(
   'path root',
   [
-    {name: 'path.parse', fn: () => path.parse(cwd).root},
+    {name: 'path.parse(...)', fn: () => path.parse(cwd).root},
     {name: 'path.resolve("/")', fn: () => path.resolve('/')},
   ],
   (result) => {
     assert.equal(result, root)
+  },
+)
+
+await runBenchmark(
+  'cwd',
+  [
+    {name: 'process.cwd()', fn: () => process.cwd()},
+    {name: 'path.resolve()', fn: () => path.resolve()},
+  ],
+  (result) => {
+    assert.equal(result, cwd)
   },
 )
