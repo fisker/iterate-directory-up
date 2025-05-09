@@ -31,7 +31,7 @@ function* iterateDirectoryUp(from, to) {
     const relation = path.relative(stopDirectory, directory)
 
     // `directory` is not a child directory of `stopDirectory`
-    if (relation.startsWith('..') || relation === directory) {
+    if (relation[0] === '.' || relation === directory) {
       return
     }
   }
