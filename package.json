@@ -23,6 +23,7 @@
     "index.d.ts.map"
   ],
   "scripts": {
+    "debug": "node --watch example.js",
     "build": "run-p clean \"build:*\"",
     "build:types": "tsc --emitDeclarationOnly --noEmit false",
     "clean": "run-p \"clean:*\"",

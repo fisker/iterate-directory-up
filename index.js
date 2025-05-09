@@ -27,17 +27,20 @@ function* iterateDirectoryUp(from, to) {
   let directory = toAbsolutePath(from) ?? process.cwd()
   const stopDirectory = toAbsolutePath(to) ?? path.parse(directory).root
 
-  // `directory` is not a child directory of `stopDirectory`
-  if (!directory.startsWith(stopDirectory)) {
-    return
-  }
+  while (true) {
+    const relation = path.relative(stopDirectory, directory)
+    const isSameDirectory = !relation
+    const isChild =
+      !isSameDirectory && !relation.startsWith('..') && relation !== directory
+    if (isChild || isSameDirectory) {
+      yield directory
+    }
+    if (!isChild) {
+      break
+    }
 
-  while (directory !== stopDirectory) {
-    yield directory
     directory = path.dirname(directory)
   }
-
-  yield stopDirectory
 }
 
 export default iterateDirectoryUp

@@ -54,6 +54,7 @@ runTest(['/', '/'], ['/'])
 
 // stop directory is not a parent directory
 runTest(['/a', '/b'], [])
+runTest(['/aa', '/a'], [])
 
 // Trialing slash doesn't matter
 runTest(['/a/b/', '/a'], ['/a/b', '/a'])
@@ -72,3 +73,17 @@ test('Relative path', () => {
     ['./a', '.'].map((directory) => path.resolve(directory)),
   )
 })
+
+// Case insensitive
+if (isWindows) {
+  // Drive letter
+  assert.deepEqual(getDirectories(String.raw`Z:\a\b`, String.raw`z:\a`), [
+    String.raw`Z:\a\b`,
+    String.raw`Z:\a`,
+  ])
+  // Directory name
+  assert.deepEqual(getDirectories(String.raw`Z:\a\b`, String.raw`Z:\A`), [
+    String.raw`Z:\a\b`,
+    String.raw`Z:\a`,
+  ])
+}
