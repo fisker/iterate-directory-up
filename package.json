@@ -23,11 +23,11 @@
     "index.d.ts.map"
   ],
   "scripts": {
-    "debug": "node --watch example.js",
     "build": "run-p clean \"build:*\"",
     "build:types": "tsc --emitDeclarationOnly --noEmit false",
     "clean": "run-p \"clean:*\"",
     "clean:dist": "del-cli dist",
+    "debug": "node --watch example.js",
     "dist": "run-p \"dist:*\"",
     "dist:npm": "release-it",
     "fix": "run-p --continue-on-error \"fix:*\"",
