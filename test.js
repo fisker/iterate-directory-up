@@ -6,13 +6,13 @@ import url from 'node:url'
 import iterateDirectoryUp from './index.js'
 
 const isWindows = path.sep === '\\'
-let DRIVER_LETTER
+let DRIVE_LETTER
 if (isWindows) {
-  DRIVER_LETTER = process.cwd()[0].toLowerCase() === 'z' ? 'A' : 'Z'
+  DRIVE_LETTER = process.cwd()[0].toLowerCase() === 'z' ? 'A' : 'Z'
 }
 
 const getDirectoryName = (path) =>
-  isWindows ? `${DRIVER_LETTER}:${path.replaceAll('/', '\\')}` : path
+  isWindows ? `${DRIVE_LETTER}:${path.replaceAll('/', '\\')}` : path
 
 const getDirectories = (from, to) => [...iterateDirectoryUp(from, to)]
 
@@ -81,15 +81,16 @@ test('Relative path', () => {
 // Case insensitive
 if (isWindows) {
   test('Case insensitive', () => {
+    const expected = [String.raw`Z:\a\b`, String.raw`Z:\a`]
     // Drive letter
-    assert.deepEqual(getDirectories(String.raw`Z:\a\b`, String.raw`z:\a`), [
-      String.raw`Z:\a\b`,
-      String.raw`Z:\a`,
-    ])
+    assert.deepEqual(
+      getDirectories(String.raw`Z:\a\b`, String.raw`z:\a`),
+      expected,
+    )
     // Directory name
-    assert.deepEqual(getDirectories(String.raw`Z:\a\b`, String.raw`Z:\A`), [
-      String.raw`Z:\a\b`,
-      String.raw`Z:\a`,
-    ])
+    assert.deepEqual(
+      getDirectories(String.raw`Z:\a\b`, String.raw`Z:\A`),
+      expected,
+    )
   })
 }
