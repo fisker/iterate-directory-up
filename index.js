@@ -38,7 +38,7 @@ function* iterateDirectoryUp(from, to) {
 
   stopDirectory = stopDirectory
     ? directory.slice(0, stopDirectory.length)
-    : path.resolve('/')
+    : path.parse(directory).root
 
   while (directory !== stopDirectory) {
     yield directory

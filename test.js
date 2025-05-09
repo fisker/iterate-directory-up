@@ -6,9 +6,13 @@ import url from 'node:url'
 import iterateDirectoryUp from './index.js'
 
 const isWindows = path.sep === '\\'
+let DRIVER_LETTER
+if (isWindows) {
+  DRIVER_LETTER = process.cwd()[0].toLowerCase() === 'z' ? 'A' : 'Z'
+}
 
 const getDirectoryName = (path) =>
-  isWindows ? `Z:${path.replaceAll('/', '\\')}` : path
+  isWindows ? `${DRIVER_LETTER}:${path.replaceAll('/', '\\')}` : path
 
 const getDirectories = (from, to) => [...iterateDirectoryUp(from, to)]
 
