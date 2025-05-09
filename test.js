@@ -76,14 +76,16 @@ test('Relative path', () => {
 
 // Case insensitive
 if (isWindows) {
-  // Drive letter
-  assert.deepEqual(getDirectories(String.raw`Z:\a\b`, String.raw`z:\a`), [
-    String.raw`Z:\a\b`,
-    String.raw`Z:\a`,
-  ])
-  // Directory name
-  assert.deepEqual(getDirectories(String.raw`Z:\a\b`, String.raw`Z:\A`), [
-    String.raw`Z:\a\b`,
-    String.raw`Z:\a`,
-  ])
+  test('Case insensitive', () => {
+    // Drive letter
+    assert.deepEqual(getDirectories(String.raw`Z:\a\b`, String.raw`z:\a`), [
+      String.raw`Z:\a\b`,
+      String.raw`Z:\a`,
+    ])
+    // Directory name
+    assert.deepEqual(getDirectories(String.raw`Z:\a\b`, String.raw`Z:\A`), [
+      String.raw`Z:\a\b`,
+      String.raw`Z:\a`,
+    ])
+  })
 }

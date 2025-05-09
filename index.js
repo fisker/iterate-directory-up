@@ -26,16 +26,17 @@ for (const directory of iterateDirectoryUp('/a/b')) {
 function* iterateDirectoryUp(from, to) {
   let directory = toAbsolutePath(from) ?? process.cwd()
   const stopDirectory = toAbsolutePath(to) ?? path.parse(directory).root
+  const relation = path.relative(stopDirectory, directory)
+
+  // `directory` is not a child directory of `stopDirectory`
+  if (relation.startsWith('..') || relation === directory) {
+    return
+  }
 
   while (true) {
-    const relation = path.relative(stopDirectory, directory)
-    const isSameDirectory = !relation
-    const isChild =
-      !isSameDirectory && !relation.startsWith('..') && relation !== directory
-    if (isChild || isSameDirectory) {
-      yield directory
-    }
-    if (!isChild) {
+    yield directory
+
+    if (!path.relative(stopDirectory, directory)) {
       break
     }
 
