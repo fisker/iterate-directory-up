@@ -58,3 +58,20 @@ await runBenchmark(
     assert.equal(result, cwd)
   },
 )
+
+await runBenchmark(
+  'parent directory',
+  [
+    {
+      name: 'path.resolve(directory, "..")',
+      fn: () => path.resolve(path.join(cwd, 'child'), '..'),
+    },
+    {
+      name: 'path.dirname(directory)',
+      fn: () => path.dirname(path.join(cwd, 'child')),
+    },
+  ],
+  (result) => {
+    assert.equal(result, cwd)
+  },
+)
